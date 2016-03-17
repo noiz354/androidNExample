@@ -32,25 +32,27 @@ public class MainActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.button)).setOnClickListener(
                 (View view) -> {
                     Toast.makeText(MainActivity.this, "mencoba login", Toast.LENGTH_LONG).show();
-                    Observable.just(true).map(b -> b+"").subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .unsubscribeOn(Schedulers.io()).subscribe((i ->
-                        Log.d("MNORMANSYAH", "hallo sini "+i)));
+//                    Observable.just(true).map(b -> b+"").subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .unsubscribeOn(Schedulers.io()).subscribe((i ->
+//                        Log.d("MNORMANSYAH", "hallo sini "+i)));
 
                     Observable.just(true)
-                            .flatMap(c -> {
-                                return resetEmail();
-                            })
-                    .flatMap((b) -> {
-                        if((new Random().nextInt(1000)%2==1)){
-                            return Observable.just(b);
-                        }
-                        return null;
-                    } ).subscribe(i -> {
-                        ((TextView)MainActivity.this.findViewById(R.id.textView)).setText(
-                                i.getForgotPasswordModel().toString()
-                        );
-                    });
+                            .flatMap(c ->
+                                resetEmail()
+                            )
+//                    resetEmail()// uncomment this, retrofit is failed for this rate
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .unsubscribeOn(Schedulers.io())
+                            .subscribe(
+                                i ->
+                                ((TextView)MainActivity.this.findViewById(R.id.textView)).setText(
+                                        i.getForgotPasswordModel().toString()
+                                ),
+                                error -> Log.e("MNORMANSYAH", error.getLocalizedMessage()),
+                                () -> Log.d("MNORMANSYAH", "selesai compile !!")
+                            );
                 }
         );
 
