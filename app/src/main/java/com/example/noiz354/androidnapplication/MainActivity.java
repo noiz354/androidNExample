@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.interfaces.HaloLambda;
 import com.example.utils.ForgotPasswordApi;
 import com.example.utils.ForgotPasswordData;
 import com.example.utils.RetrofitUtils;
@@ -18,6 +19,10 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * lambda expression :
+ * interface dengan banyak default + static dengan single abstract method.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -48,6 +53,26 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
         );
+
+        HaloLambda<Boolean> test = b -> {
+            if(b){
+                Log.d("MNORMANSYAH", "Mantap Gan !! "+MainActivity.class.getSimpleName());
+            }
+            return null;
+        };
+
+        justLogWithLambda(
+                b -> {
+                    if(b){
+                        Log.d("MNORMANSYAH", "Mantap Gan !! "+MainActivity.class.getSimpleName());
+                    }
+                    return null;
+                }
+        );
+    }
+
+    private void justLogWithLambda(HaloLambda<Boolean> haloLambda){
+        haloLambda.print(true);
     }
 
     private Observable<ForgotPasswordData>  resetEmail(){
