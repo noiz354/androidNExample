@@ -6,15 +6,12 @@ import android.net.NetworkInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by noiz354 on 3/16/16.
@@ -29,8 +26,8 @@ public class RetrofitUtils {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         // Add the interceptor to OkHttpClient
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(logging);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(logging).build();
+//        client.interceptors().add(logging);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
 
